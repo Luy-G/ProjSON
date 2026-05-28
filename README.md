@@ -15,10 +15,27 @@ ProJson é uma biblioteca em Kotlin para gerar JSON a partir de objetos, com sup
 * Personalização com anotações:
   * `@JsonIgnore`: ignora uma propriedade;
   * `@JsonProperty("name")`: altera o nome de uma propriedade;
-  * `@JsonString(Plugin::class)`: serializa objetos de uma classe como strings atraves de um plugin;
+  * `@JsonString(Plugin::class)`: serializa objetos de uma classe como strings através de um plugin;
 * Manipulação em memória de objetos e arrays JSON;
 * Percurso da estrutura JSON com `accept`;
 * Geração de texto JSON com `toJsonString`/`toString`.
+
+## API pública
+
+A função principal da biblioteca é:
+
+```kotlin
+fun toJson(obj: Any?): JsonValue
+```
+
+Esta função recebe um valor Kotlin e devolve o modelo JSON correspondente. Pode receber `null`, valores simples, `Map`, `Collection`, data classes e classes normais.
+
+Exemplo:
+
+```kotlin
+val json = ProJson().toJson(meuObjeto)
+println(json.toJsonString())
+```
 
 ## Exemplo de resultado
 
@@ -79,15 +96,6 @@ O ficheiro gerado fica em:
 
 ```text
 build/libs/Projeto-1.0-SNAPSHOT.jar
-```
-
-Para usar a biblioteca noutro projeto, copia o JAR para uma pasta `lib` e adiciona-o ao `build.gradle.kts`:
-
-```kotlin
-dependencies {
-    implementation(files("lib/Projeto-1.0-SNAPSHOT.jar"))
-    implementation(kotlin("reflect"))
-}
 ```
 
 Exemplo simples:
@@ -156,7 +164,7 @@ class Task(
 ### 5. Plugins com `@JsonString`
 
 ```kotlin
-class DateAsText : DateToText {
+class DateAsText : JsonStringPlugin {
     override fun toJsonString(obj: Any): String {
         val d = obj as Date
         return "%02d/%02d/%04d".format(d.day, d.month, d.year)
@@ -172,7 +180,7 @@ val json = ProJson().toJson(listOf(d1, d2)) as JsonArray
 println(json)
 ```
 
-Output:
+Resultado:
 
 ```json
 ["30/02/2026", "31/04/2026"]
@@ -190,16 +198,18 @@ json.accept { node ->
 
 ## Testes
 
-Os testes estão em `src/test/kotlin/Tests.kt` e podem ser executados com:
+Os testes estão separados em vários ficheiros dentro de `src/test/kotlin`.
+
+Para correr os testes de raiz:
 
 ```bash
-./gradlew test
+./gradlew clean test
 ```
 
 No Windows:
 
 ```bash
-.\gradlew.bat test
+.\gradlew.bat clean test
 ```
 
 ## Estrutura
@@ -212,4 +222,4 @@ No Windows:
 | `JsonReference` | Representa objetos `{ "$ref": "..." }` |
 | `ProJson.toJson` | Converte objetos Kotlin em JSON |
 | `@JsonIgnore`, `@JsonProperty`, `@Reference` | Personalizam propriedades |
-| `@JsonString` e `DateToText` | Permitem serialização por plugin |
+| `@JsonString` e `JsonStringPlugin` | Permitem serialização por plugin |

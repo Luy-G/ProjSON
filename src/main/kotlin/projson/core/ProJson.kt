@@ -15,7 +15,16 @@ import kotlin.reflect.full.memberProperties
 // converte objetos Kotlin para JSON
 class ProJson {
 
-    // ponto de entrada da biblioteca
+    /**
+     * API publica principal da biblioteca.
+     *
+     * Recebe um valor Kotlin e devolve o modelo JSON correspondente.
+     * O valor recebido pode ser null, um valor simples, um Map, uma Collection,
+     * uma data class ou uma classe normal.
+     *
+     * Esta funcao tambem trata automaticamente dos ids, das referencias,
+     * das anotacoes e dos plugins definidos pela biblioteca.
+     */
     fun toJson(obj: Any?): JsonValue {
         val seen = mutableMapOf<Any, JsonObject>()
         return toJson(obj, seen)
@@ -55,7 +64,7 @@ class ProJson {
 
     // usa o plugin indicado na anotacao
     private fun pluginToJson(obj: Any, annotation: JsonString): JsonValue {
-        val plugin = annotation.DateToText.createInstance()
+        val plugin = annotation.plugin.createInstance()
         return JsonPrimitive(plugin.toJsonString(obj))
     }
 

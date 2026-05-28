@@ -20,4 +20,4 @@ annotation class Reference
 // usa um plugin para gerar uma string
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class JsonString(val DateToText: KClass<out DateToText>)
+annotation class JsonString(val plugin: KClass<out JsonStringPlugin>)
