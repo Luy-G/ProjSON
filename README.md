@@ -3,7 +3,7 @@
 Trabalho realizado por:
 
 * Luís Cardoso - 98861
-* Afonso Taveira
+* Afonso Taveira - 99198
 
 ProJson é uma biblioteca em Kotlin para gerar JSON a partir de objetos, com suporte para referências entre objetos, anotações e plugins.
 
